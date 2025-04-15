@@ -3,6 +3,9 @@ const app = express();
 const port = 3000;
 const cors = require('cors')
 
+// import routes
+const moviesRoutes = require('./routes/movies')
+
 // server listening
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
@@ -23,3 +26,6 @@ app.use(express.json())
 
 // Static Assets Middleware
 app.use(express.static('public'));
+
+// Routes Middleware
+app.use('/api/v1/movies', moviesRoutes);
