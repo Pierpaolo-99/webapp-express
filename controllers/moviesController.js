@@ -38,7 +38,32 @@ function show(req, res) {
     })
 }
 
+function storeReview(req, res) {
+    const { id } = req.params
+    const { name, text, vote } = req.body
+
+    // Validate input
+    if (!name || !text || typeof vote !== 'number' || vote < 1 || vote > 5) {
+        return res.status(400).json({ error: 'Invalid input data. Ensure vote is between 1 and 5.' });
+    }
+
+    const created_at = new Date().toISOString().slice(0, 19).replace('T', ' ')
+    const updated_at = created_at
+
+    const sql = 'INSERT INTO reviews (movie_id, name, text, vote, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)'
+    const values = [id, name, text, vote, created_at, updated_at]
+
+    connection.query(sql, values, (err, results) => {
+        if (err) return res.status(500).json({ error: err.message });
+
+        console.log('SQL Query executed, results:', results);
+
+        res.status(201).json({ message: 'Review added successfully' })
+    })
+}
+
 module.exports = {
     index,
-    show
+    show,
+    storeReview
 }
