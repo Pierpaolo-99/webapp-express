@@ -1,10 +1,14 @@
 const express = require('express');
 const app = express();
 const port = 3000;
-const cors = require('cors')
+const cors = require('cors');
 
 // import routes
-const moviesRoutes = require('./routes/movies')
+const moviesRoutes = require('./routes/movies');
+
+// import middleware
+const serverError = require('./middleware/serverError');
+const notFound = require('./middleware/notFound');
 
 // server listening
 app.listen(port, () => {
@@ -29,3 +33,7 @@ app.use(express.static('public'));
 
 // Routes Middleware
 app.use('/api/v1/movies', moviesRoutes);
+
+// Middlewares Error
+app.use(serverError);
+app.use(notFound);
