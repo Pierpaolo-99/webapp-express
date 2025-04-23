@@ -7,4 +7,8 @@ router.get('/:id', moviesController.show);
 
 router.post('/:id/review', moviesController.storeReview);
 
+router.post('/register', moviesController.storeRegistration);
+
+router.post('/login', moviesController.storeLogin);
+
 module.exports = router

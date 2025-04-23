@@ -26,12 +26,7 @@ function show(req, res) {
         connection.query(reviewSql, [id], (err, reviews) => {
             if (err) return res.status(500).json({ error: 'Review not found' });
 
-            const reviewsData = reviews.map(review => {
-                const { id, movie_id, ...rest } = review;
-                return rest
-            })
-
-            movie.review = reviewsData
+            movie.review = reviews
 
             res.json(movie)
         })
@@ -43,7 +38,7 @@ function storeReview(req, res) {
     const { name, text, vote } = req.body
 
     // Validate input
-    if (!name || !text || typeof vote !== 'number' || vote < 1 || vote > 5) {
+    if (!name || !text || vote < 1 || vote > 5) {
         return res.status(400).json({ error: 'Invalid input data. Ensure vote is between 1 and 5.' });
     }
 
@@ -62,8 +57,18 @@ function storeReview(req, res) {
     })
 }
 
+function storeRegistration(req, res) {
+    return res.json({ message: 'Registered successfully', user: req.user });
+}
+
+function storeLogin(req, res) {
+    return res.json({ message: 'Logged in successfully', user: req.user });
+}
+
 module.exports = {
     index,
     show,
-    storeReview
+    storeReview,
+    storeRegistration,
+    storeLogin
 }
