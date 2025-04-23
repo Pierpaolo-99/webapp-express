@@ -3,6 +3,20 @@ const app = express();
 const port = 3000;
 const cors = require('cors');
 
+// Auth dependencies
+const session = require('express-session');
+const passport = require('passport');
+const initializePassport = require('./auth/passport-config');
+
+initializePassport(passport);
+
+app.use(session({
+    secret: 'your_secret_key',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false } // Set to true if using HTTPS
+}))
+
 // import routes
 const moviesRoutes = require('./routes/movies');
 
@@ -22,7 +36,8 @@ app.get('/', (req, res) => {
 
 // Cors Middleware
 app.use(cors({
-    origin: 'http://localhost:5173'
+    origin: 'http://localhost:5173',
+    credentials: true
 }))
 
 // JSON Middleware
